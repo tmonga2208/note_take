@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useSync } from "@/hooks/useSync";
 import { saveLocalNote, addPendingSyncNote, LocalNote } from "@/lib/localStorage";
 import { v4 as uuidv4 } from "uuid";
+import { Timestamp } from "firebase/firestore";
 
 export default function NewNote() {
   const [title, setTitle] = useState("");
@@ -27,11 +28,12 @@ export default function NewNote() {
     setLoading(true);
     try {
       const noteId = uuidv4();
+      const now = new Date();
       const newNote: LocalNote = {
         id: noteId,
         title: title.trim(),
         description: description.trim(),
-        createdAt: new Date(),
+        createdAt: now,
       };
 
       if (!user) {
@@ -44,7 +46,11 @@ export default function NewNote() {
 
       if (isOnline) {
         // If online and logged in, save to Firebase
-        const result = await addData(`users/${user.uid}/notes/${noteId}`, newNote);
+        const result = await addData(`users/${user.uid}/notes/${noteId}`, {
+          ...newNote,
+          createdAt: Timestamp.fromDate(now),
+          updatedAt: Timestamp.fromDate(now)
+        });
         if (result.success && result.data) {
           toast.success("Note created successfully");
           router.push(`/${noteId}`);
