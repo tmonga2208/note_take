@@ -169,7 +169,7 @@ export default function Home() {
 
       {!isOnline && (
         <div className="fixed top-4 right-4 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-md shadow-md">
-          You're offline. Changes will be synced when you're back online.
+          You are offline. Changes will be synced when you are back online.
         </div>
       )}
 

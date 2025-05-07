@@ -11,7 +11,6 @@ import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useSync } from "@/hooks/useSync";
 import { getLocalNotes, saveLocalNote, addPendingSyncNote, LocalNote } from "@/lib/localStorage";
-import { Timestamp } from "firebase/firestore";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);

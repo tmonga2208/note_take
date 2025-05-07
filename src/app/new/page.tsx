@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/usercontext";
 import { addData } from "@/hooks/useDB";
-import { Note } from "@/lib/notes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

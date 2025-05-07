@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '@/context/usercontext';
 import { addData } from './useDB';
-import { getPendingSyncNotes, removePendingSyncNote, LocalNote } from '@/lib/localStorage';
+import { getPendingSyncNotes, removePendingSyncNote } from '@/lib/localStorage';
 import { toast } from 'sonner';
 
 export const useSync = () => {
