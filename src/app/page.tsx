@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/context/usercontext";
 import { getCollection, deleteData, addData } from "@/hooks/useDB";
 import { Note, convertTimestampToDate } from "@/lib/notes";
+import { Timestamp } from "firebase/firestore";
 import NoteCard from "@/components/note_card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -128,8 +129,8 @@ export default function Home() {
             await addData(`users/${user.uid}/notes/${note.id}`, {
               ...note,
               order: reorderedNotes.indexOf(note),
-              createdAt: convertTimestampToDate(note.createdAt),
-              updatedAt: note.updatedAt ? convertTimestampToDate(note.updatedAt) : undefined
+              createdAt: Timestamp.fromDate(convertTimestampToDate(note.createdAt)),
+              updatedAt: note.updatedAt ? Timestamp.fromDate(convertTimestampToDate(note.updatedAt)) : undefined
             });
           }
           toast.success("Note order updated");
