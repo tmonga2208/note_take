@@ -3,7 +3,7 @@ import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/usercontext";
 import { getData, addData } from "@/hooks/useDB";
-import { Note, formatDate } from "@/lib/notes";
+import { Note, formatDate, convertTimestampToDate } from "@/lib/notes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +11,7 @@ import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useSync } from "@/hooks/useSync";
 import { getLocalNotes, saveLocalNote, addPendingSyncNote, LocalNote } from "@/lib/localStorage";
+import { Timestamp } from "firebase/firestore";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -98,7 +99,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         if (isOnline) {
             // If online and logged in, update Firebase
             try {
-                const result = await addData(`users/${user.uid}/notes/${note.id}`, updatedNote);
+                const result = await addData(`users/${user.uid}/notes/${note.id}`, {
+                    ...updatedNote,
+                    createdAt: Timestamp.fromDate(convertTimestampToDate(note.createdAt)),
+                    updatedAt: Timestamp.fromDate(new Date())
+                });
                 if (result.success && result.data) {
                     setNote(result.data);
                     setIsEditing(false);
